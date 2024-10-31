@@ -1,5 +1,5 @@
 # main.py
-# v0.1.0
+# v0.2.0
 
 comds_dict = {
     'main': {
@@ -197,10 +197,10 @@ def game_loop():
                 print(f'XP Per Shift: {j["xp_per_shift"]}\n')
             applied = input('Choose a job:  ').lower()
             found = False
-            for j in jobs:
-                if j['name'].lower() == applied:
+            for job in jobs:
+                if job['name'].lower() == applied:
                     found = True
-                    applied = j
+                    applied = job
                     break
             if not found:
                 print('Job not found.')
@@ -208,16 +208,15 @@ def game_loop():
             if applied['xp_rqd'] > user['xp']:
                 print(f'You only have {user["xp"]} xp!')
                 applied = ''
+            elif random.randint(1, 4) == 1:
+                applied = ''
+                print("You failed the interview and didn't get the job.")
             else:
-                if random.randint(1, 4) == 1:
-                    applied = ''
-                    print("You failed the interview and didn't get the job.")
-                else:
-                    user['job'] = applied
-                    print(f'You nailed the interview and got the job as a {applied["name"].lower()}!')
+                user['job'] = applied['name']
+                print(f'You nailed the interview and got the job as a {applied["name"].lower()}!')
         
         if comd == 'work':
-            if user['job'] == {}:
+            if not user['job']:
                 print("You don't have a job to work at!")
             else:
                 if time.time() - timers['work'] < 7:
@@ -287,13 +286,13 @@ def game_loop():
                                         print(f'Good job! That only took you {guesses} tries!')
                                         correct = True
                         if correct:
-                            user['wallet'] += user['job']['salary']
-                            user['xp'] += user['job']['xp_per_shift']
+                            user['wallet'] += jobs[user['job']]['salary']
+                            user['xp'] += jobs[user['job']]['xp_per_shift']
                             print(f'Great work! You earned ${user["job"]["salary"]}.')
                         else:
-                            user['wallet'] += user['job']['salary'] / 2
-                            user['xp'] += int(user['job']['xp_per_shift'] / 2)
-                            print(f'You earned ${user["job"]["salary"] / 2}.')
+                            user['wallet'] += jobs[user['job']]['salary'] / 2
+                            user['xp'] += int(jobs[user['job']]['xp_per_shift'] / 2)
+                            print(f'You earned ${jobs[user["job"]]["salary"] / 2}.')
                         timers['work'] = time.time()
                         user['daily']['work'] += 1
                         user['weekly']['work'] += 1
@@ -365,6 +364,7 @@ def game_loop():
             if time.time() - timers['sleep'] < 20:
                 print(f'You have already slept recently, try again in {round(20 - (time.time() - timers["sleep"]), 1)}s.')
             else:
+                # New day
                 print()
                 user['day'] += 1
                 if user['day'] == 7:
@@ -384,6 +384,12 @@ def game_loop():
                     user['hunger'] -= 1
                 else:
                     user['health'] -= 1
+                if random.randint(250, 250) == 250:
+                    user['bank'] *= round(user["bank"] * 0.25, 2)
+                    print(f'${round(user["bank"] * 0.75, 2)} got stolen from your bank!')
+                elif random.randint(1, 25) == 25:
+                    user['wallet'] = 0
+                    print('Your wallet got stolen!')
         
         if user['health'] <= 0:
             print('You died!')
