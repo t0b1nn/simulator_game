@@ -1,7 +1,7 @@
 
 # The $imulator
 
-**Version**: v0.2.1
+**Version**: v0.2.2
 
 A text-based simulation game where you can dive into the thrill of life’s adventures—manage your finances, try your luck at the casino, hunt for resources, develop skills, and much more!
 
@@ -81,9 +81,11 @@ simulator_game/
 ├── LICENSE
 ├── README.md
 ├── __pycache__/
-│   └── b64_utils.cpython-311.pyc
+│   ├── b64_utils.cpython-311.pyc
+│   └── login.cpython-311.pyc
 ├── b64_utils.py                        # Utilities for Base 64 encryption
 ├── lofi_mix.mp3                        # Background music for game
+├── login.py                            # Log in & Sign up feature
 ├── main.py                             # Main game file
 ├── minigames/
 │   ├── __pycache__/

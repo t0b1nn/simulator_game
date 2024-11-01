@@ -1,5 +1,5 @@
 # main.py
-# v0.2.1
+# v0.2.2
 
 comds_dict = {
     'main': {
@@ -74,6 +74,11 @@ def obtain(item, quantity = 1):
         user['inventory'][item] += quantity
     except KeyError:
         user['inventory'][item] = quantity
+def delete_lines(lines):
+    for _ in range(lines):
+        sys.stdout.write('\033[F')
+        sys.stdout.write('\033[K')
+        sys.stdout.flush()
 
 def separator(word='', length=40):
     if word:
@@ -87,56 +92,6 @@ def separator(word='', length=40):
             print(f'{left} {word} {right}')
     else:
         print('-' * length)
-        
-def login():
-    global username, user
-    user = {
-        'health': 20,
-        'hunger': 20,
-        'wallet': 0.0,
-        'bank': 0.0,
-        'bank_cap': 500000.0,
-        'job': {},
-        'xp': 0,
-        'inventory': {},
-        'day': -1,
-        'week': 1,
-        'daily': {'work':0,},
-        'weekly': {'work':0,},
-    }
-    if saves and input('If you would like to sign up, type "SIGN UP".\nIf you would like to log in, press enter.  ').lower() != 'sign up': # logs in with existing account
-        user_found = False
-        while not user_found:
-            username = input('Please enter your username:  ')
-            user_found = True if username in saves else print('User not found.')
-        user.update(saves[username])
-        password_wrong = True
-        while password_wrong:
-            password = maskpass.askpass('Please enter your password:    ')
-            if password == b64_utils.decode(user['password']):
-                password_wrong = False
-            else:
-                print('Incorrect password. Please try again.')
-        print('Successfully logged in!\n')
-        user['day'] -= 1
-    else: # signs up with new account 
-        confirmed = False
-        while not confirmed:
-            username = input('Type "CANCEL" to cancel.\nCreate a username:  ')
-            if username not in saves.keys():
-                if input(f'Enter "y" to confirm username {username}:  ').lower() == 'y': confirmed = True
-            else:
-                print('Username taken. Please create a new username.')
-        password_confirmed = False
-        while not password_confirmed:
-            password = maskpass.askpass('Create a password:    ')
-            password_confirmation = maskpass.askpass('Confirm password:    ')
-            if password != password_confirmation:
-                print('Passwords do not match.')
-            else:
-                password_confirmed = True
-        user['password'] = b64_utils.encode(password)
-        print('Account created!\n')
 
 def game_loop():
     comd = 'sleep'
@@ -235,10 +190,7 @@ def game_loop():
                             print('Memorize words and colours!')
                             for i in range(3): print(f'{colours[i]} {words[i]}')
                             time.sleep(3)
-                            for _ in range(3):
-                                sys.stdout.write('\033[F')
-                                sys.stdout.write('\033[K')
-                                sys.stdout.flush()
+                            delete_lines(3)
                             index = random.choice(range(3))
                             if input(f'What word was next to {colours[index]}?  ').lower() == words[index]:
                                 print('Correct!')
@@ -250,10 +202,7 @@ def game_loop():
                             print('Memorize words in order!')
                             for word in words: print(word)
                             time.sleep(3)
-                            for _ in range(5):
-                                sys.stdout.write('\033[F')
-                                sys.stdout.write('\033[K')
-                                sys.stdout.flush()
+                            delete_lines(5)
                             index = random.choice(range(5))
                             if input(f'What word was {orders[index]}?  ') == words[index]:
                                 print('Correct!')
@@ -399,17 +348,17 @@ def game_loop():
 
 
 if __name__ == '__main__':
-    import random, time, os, json, sys, maskpass, b64_utils
+    import random, time, os, json, sys, login
     from minigames import blackjack
     from pygame import mixer
-    os.system('clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
     mixer.init()
     mixer.music.load('lofi_mix.mp3')
     if input('Music? [Y/N]  ').lower() == 'y':mixer.music.play(-1)
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
-    with open('saves.json', 'r') as file: saves = json.load(file)
-    login()
+    login.main()
+    user, username, saves = login.user, login.username, login.saves
     print('You wake up, ready for a new day...')
     game_loop()
     mixer.music.stop()

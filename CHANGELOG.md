@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.2.2] - 01-11-2024
+
+### Added
+- **Cancel option**: Option to cancel logging in/signing up.
+### Fixes
+- **Log in/Sign up logic**: Created new file to handle logging in.
+
+---
 ## [v0.2.1] - 01-11-2024
 
 ### Fixes
