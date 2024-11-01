@@ -1,7 +1,7 @@
 # login.py
 # v0.2.2
 
-import maskpass, b64_utils, json, sys, time
+import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
 
 def signup_user():
