@@ -1,6 +1,15 @@
 # Changelog
 
+## [v0.2.1] - 01-11-2024
+
+### Fixes
+- **Bank rob bugfix**: Fixed bug where player would always get bank robbed.
+- **Improved prompts**: Kept input promps consistent.
+- **Improved readibility***: Variable names changed.
+
+---
 ## [v0.2.0] - 31-10-2024
+
 ### Added
 - **Random events during sleep**: Random events can now occur when the player sleeps:
     - **Bank roberry**: A very low chance that a high portion of the user's bank money gets stolen.

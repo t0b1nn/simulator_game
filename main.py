@@ -1,5 +1,5 @@
 # main.py
-# v0.2.0
+# v0.2.1
 
 comds_dict = {
     'main': {
@@ -104,8 +104,7 @@ def login():
         'daily': {'work':0,},
         'weekly': {'work':0,},
     }
-
-    if saves and input('If you would like to sign up, type "SIGN UP".\nIf you would like to log in, press enter.\n').lower() != 'sign up': # logs in with existing account
+    if saves and input('If you would like to sign up, type "SIGN UP".\nIf you would like to log in, press enter.  ').lower() != 'sign up': # logs in with existing account
         user_found = False
         while not user_found:
             username = input('Please enter your username:  ')
@@ -128,14 +127,14 @@ def login():
                 if input(f'Enter "y" to confirm username {username}:  ').lower() == 'y': confirmed = True
             else:
                 print('Username taken. Please create a new username.')
-        confirmed = False
-        while not confirmed:
+        password_confirmed = False
+        while not password_confirmed:
             password = maskpass.askpass('Create a password:    ')
             password_confirmation = maskpass.askpass('Confirm password:    ')
             if password != password_confirmation:
                 print('Passwords do not match.')
             else:
-                confirmed = True
+                password_confirmed = True
         user['password'] = b64_utils.encode(password)
         print('Account created!\n')
 
@@ -384,7 +383,7 @@ def game_loop():
                     user['hunger'] -= 1
                 else:
                     user['health'] -= 1
-                if random.randint(250, 250) == 250:
+                if random.randint(1, 250) == 250:
                     user['bank'] *= round(user["bank"] * 0.25, 2)
                     print(f'${round(user["bank"] * 0.75, 2)} got stolen from your bank!')
                 elif random.randint(1, 25) == 25:
@@ -408,7 +407,7 @@ if __name__ == '__main__':
     mixer.music.load('lofi_mix.mp3')
     if input('Music? [Y/N]  ').lower() == 'y':mixer.music.play(-1)
     print('Welcome to The $imulator!')
-    print('Type "help" for more information.')
+    print('Type "help" for more information.\n')
     with open('saves.json', 'r') as file: saves = json.load(file)
     login()
     print('You wake up, ready for a new day...')
