@@ -358,8 +358,8 @@ if __name__ == '__main__':
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
     login.main()
-    user, username = login.main()
     saves = login.saves
+    user, username = login.main()
     print('You wake up, ready for a new day...')
     game_loop()
     mixer.music.stop()

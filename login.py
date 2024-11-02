@@ -74,6 +74,7 @@ def main():
         'daily': {'work':0,},
         'weekly': {'work':0,},
     }
+    print('Type "CANCEL" to cancel action.')
     done = False
     while not done:
         choice = input('If you would like to sign up, type "SIGN UP"\nIf you would like to log in, type "LOG IN".  ').lower()
