@@ -1,5 +1,16 @@
 # Changelog
 
+# [v0.3.0] - 02-11-2024
+
+### Added
+- **New User class**: Introduced new User class replacing the old dictionary.
+- **Deposit/Withdraw**: Updated these commands using User class.
+
+### Fixes
+- **Login.py rearrangement**: Quick rearrangement to login.py for readability
+- **Bug fixes**: Minor bug fixes and performance improvements.
+
+---
 ## [v0.2.4] - 02-11-2024
 
 ### Fixes

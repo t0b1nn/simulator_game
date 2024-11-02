@@ -1,5 +1,5 @@
 # main.py
-# v0.2.4
+# v0.3.0
 
 comds_dict = {
     'main': {
@@ -58,6 +58,34 @@ items = {
 week_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday', ]
 
 
+class User:
+    def __init__(self, data):
+        for key, value in data.items():
+            setattr(self, key, value)
+    @property
+    def is_alive(self):
+        return self.health > 0
+    def deposit(self, amount):
+        if self.wallet >= amount and self.bank + amount <= self.bank_cap:
+            self.wallet -= amount
+            self.bank += amount
+            return True
+        else:
+            return False
+    def withdraw(self, amount):
+        if self.bank >= amount:
+            self.bank -= amount
+            self.wallet += amount
+            return True
+        else:
+            return False
+    def obtain(self, item, quantity = 1):
+        try:
+            self.inventory[item] += quantity
+        except KeyError:
+            self.inventory[item] = quantity
+
+
 def find(item, options):
     if item in options: return item
     else: print('Command not found.')
@@ -77,11 +105,6 @@ def help(category):
         print(f'\033[1m{c}\033[0m: {comds_dict[category][c]}')
     separator()
 
-def obtain(item, quantity = 1):
-    try:
-        user['inventory'][item] += quantity
-    except KeyError:
-        user['inventory'][item] = quantity
 def delete_lines(lines):
     for _ in range(lines):
         sys.stdout.write('\033[F')
@@ -110,44 +133,40 @@ def game_loop():
             while True:
                 try:
                     amount = float(input('How much cash would you like to deposit?  '))
-                    if amount > user['wallet']:
-                        print(f'You only have ${user["wallet"]} in your wallet!')
-                    elif user['bank'] + amount > user['bank_cap']:
-                        print(f'Your bank capacity is only ${user["bank_cap"]}!')
-                    else:
+                    if user.deposit(amount):
+                        print(f'Successfully deposited ${amount}.')
                         break
+                    elif amount > user.wallet:
+                        print(f'You only have ${user.wallet} in your wallet!')
+                    else:
+                        print(f'Your bank cap is ${user.bank_cap}!')
                 except ValueError:
                     print('Please enter a valid amount.')
-            user['wallet'] -= amount
-            user['bank'] += amount
-            print(f"Successfully deposited ${amount}.")
         
         if comd == 'withdraw':
             while True:
                 try:
                     amount = float(input('How much cash would you like to withdraw?  '))
-                    if amount > user['bank']:
-                        print(f'You only have ${user["bank"]} in your bank!')
-                    else:
+                    if user.withdraw(amount):
+                        print(f"Successfully withdrawn ${amount}.")
                         break
+                    else:
+                        print(f'You only have ${user.bank} in your bank!')
                 except ValueError:
                     print('Please enter a valid amount.')
-            user['bank'] -= amount
-            user['wallet'] += amount
-            print(f"Successfully withdrawn ${amount}.")
         
         if comd == 'profile':
             print(f'\n\033[1mProfile - {username}\033[0m')
-            print(f'XP: {user["xp"]}\n')
+            print(f'XP: {user.xp}\n')
             print(f'\033[1mStats\033[0m')
-            print(f'Health: {user["health"]}/20')
-            print(f'Hunger: {user["hunger"]}/20\n')
+            print(f'Health: {user.health}/20')
+            print(f'Hunger: {user.hunger}/20\n')
             print(f'\033[1mFinances\033[0m')
-            print(f'Wallet: ${user["wallet"]}')
-            print(f'Bank: ${user["bank"]}/{user["bank_cap"]}\n')
+            print(f'Wallet: ${user.wallet}')
+            print(f'Bank: ${user.bank}/{user.bank_cap}\n')
             print(f'\033[1mOccupation\033[0m')
-            print(f'{"Job: " + user["job"] if user["job"] else "Currently Unemployed"}')
-            print(f'{"Weekly Shifts: " + str(user["weekly"]["work"]) + "/" + str(jobs[user["job"]]["shifts_rqd"]) if user["job"] != {} else ""}\n')
+            print(f'{"Job: " + user.job if user.job else "Currently Unemployed"}')
+            print(f'{"Weekly Shifts: " + str(user.weekly["work"]) + "/" + str(jobs[user.job]["shifts_rqd"]) if user.job != {} else ""}\n')
         
         if comd == 'work_apply':
             print('Job List:\n')
@@ -168,24 +187,24 @@ def game_loop():
             if not found:
                 print('Job not found.')
                 continue
-            if applied['xp_rqd'] > user['xp']:
-                print(f'You only have {user["xp"]} xp!')
+            if applied['xp_rqd'] > user.xp:
+                print(f'You only have {user.xp} xp!')
                 applied = ''
             elif random.randint(1, 4) == 1:
                 applied = ''
                 print("You failed the interview and didn't get the job.")
             else:
-                user['job'] = applied_name
+                user.job = applied_name
                 print(f'You nailed the interview and got the job as a {applied_name.lower()}!')
         
         if comd == 'work':
-            if not user['job']:
+            if not user.job:
                 print("You don't have a job to work at!")
             else:
                 if time.time() - timers['work'] < 7:
                     print(f'You have already worked recently, try again in {round(7 - (time.time() - timers["work"]), 1)}s.')
                 else:  
-                    if user['daily']['work'] >= 2:
+                    if user.daily['work'] >= 2:
                         print('You have already worked twice today. Try again after sleeping.')
                     else:
                         word_list = ['bottle', 'house', 'pin', 'little', 'begin', 'running', 'base', 'colour', 'safely', 'eye', 'tablet', 'dance', 'forever', 'know', 'have', 'order', 'tiger', ]
@@ -243,16 +262,16 @@ def game_loop():
                                         print(f'Good job! That only took you {guesses} tries!')
                                         correct = True
                         if correct:
-                            user['wallet'] += jobs[user['job']]['salary']
-                            user['xp'] += jobs[user['job']]['xp_per_shift']
-                            print(f'Great work! You earned ${jobs[user["job"]]["salary"]}.')
+                            user.wallet += jobs[user.job]['salary']
+                            user.xp += jobs[user.job]['xp_per_shift']
+                            print(f'Great work! You earned ${jobs[user.job]["salary"]}.')
                         else:
-                            user['wallet'] += jobs[user['job']]['salary'] / 2
-                            user['xp'] += int(jobs[user['job']]['xp_per_shift'] / 2)
-                            print(f'You earned ${jobs[user["job"]]["salary"] / 2}.')
+                            user.wallet += jobs[user.job]['salary'] / 2
+                            user.xp += int(jobs[user.job]['xp_per_shift'] / 2)
+                            print(f'You earned ${jobs[user.job]["salary"] / 2}.')
                         timers['work'] = time.time()
-                        user['daily']['work'] += 1
-                        user['weekly']['work'] += 1
+                        user.daily['work'] += 1
+                        user.weekly['work'] += 1
         
         if comd == 'hunt':
             if time.time() - timers['hunt'] < 10:
@@ -266,23 +285,23 @@ def game_loop():
                     for i in loot:
                         if loot[i] != 0:
                             print(f'{loot[i]}x {i}')
-                            obtain(i, loot[i])
+                            user.obtain(i, loot[i])
                 else:
                     print('You went hunting and returned empty-handed.')
-                user['xp'] += 4
+                user.xp += 4
                 timers['hunt'] = time.time()
         
         if comd == 'casino':
             if time.time() - timers['casino'] < 15:
                 print(f'You have already gambled recently, try again in {round(15 - (time.time() - timers["casino"]), 1)}s.')
-            elif user['wallet'] < 50:
+            elif user.wallet < 50:
                 print('You need at least $50 to enter the casino.')
             else:
                 separator('CASINO')
                 while comd != 'exit':
                     comd = find(input('Enter a command:  ').lower(), comds['casino'])
                     if comd == 'balance':
-                        print(f'Wallet: ${user["wallet"]}')
+                        print(f'Wallet: ${user.wallet}')
                     if comd == 'blackjack':
                         error = True
                         while error:
@@ -292,29 +311,29 @@ def game_loop():
                                     print('Enter a valid amount.')
                                 elif bet < 5:
                                     print('Bet must be at least $5.')
-                                elif bet > user['wallet']:
-                                    print(f'You only have {user["wallet"]} in your wallet!')
+                                elif bet > user.wallet:
+                                    print(f'You only have {user.wallet} in your wallet!')
                                 else:
                                     error = False
                             except ValueError:
                                 print('Enter a valid amount.')
                         game = blackjack.play()
                         if game == 'blackjack':
-                            user['wallet'] += bet * 1.5
-                            user['xp'] += 3
+                            user.wallet += bet * 1.5
+                            user.xp += 3
                             print(f'You earned ${bet * 1.5}!')
                         if game == 'win':
-                            user['wallet'] += bet
-                            user['xp'] += 2
+                            user.wallet += bet
+                            user.xp += 2
                             print(f'You earned ${bet}.')
                         if game == 'push':
                             print(f'You get your ${bet} back.')
-                            user['xp'] += 1
+                            user.xp += 1
                         if game == 'loss':
-                            user['wallet'] -= bet
+                            user.wallet -= bet
                             print(f'You lost ${bet}.')
                     if comd == 'help': help('casino')
-                    if user['wallet'] < 50:
+                    if user.wallet < 50:
                         print('You got kicked out because you have less than $50 in your wallet.')
                         comd = 'exit'
                 separator()
@@ -326,34 +345,34 @@ def game_loop():
             else:
                 # New day
                 print()
-                user['day'] += 1
-                if user['day'] == 7:
-                    user['day'] = 0
-                    user['week'] += 1
-                    if user['job'] != {}:
-                        if user['weekly']['work'] < user['job']['shifts_rqd']:
-                            user['job'] = {}
+                user.day += 1
+                if user.day == 7:
+                    user.day = 0
+                    user.week += 1
+                    if user.job != {}:
+                        if user.weekly['work'] < user.job['shifts_rqd']:
+                            user.job = {}
                             print('You got fired from your job.')
-                    for i in list(user['weekly']):
-                        user['weekly'][i] = 0
-                for i in list(user['daily']):
-                    user['daily'][i] = 0
-                print(f'\033[1mWeek {user["week"]}, {week_days[user["day"]]}\033[0m')
+                    for i in list(user.weekly):
+                        user.weekly[i] = 0
+                for i in list(user.daily):
+                    user.daily[i] = 0
+                print(f'\033[1mWeek {user.week}, {week_days[user.day]}\033[0m')
                 timers['sleep'] = time.time()
-                if user['hunger'] > 0:
-                    user['hunger'] -= 1
+                if user.hunger > 0:
+                    user.hunger -= 1
                 else:
-                    user['health'] -= 1
+                    user.health -= 1
                 if random.randint(1, 250) == 250:
-                    user['bank'] *= round(user["bank"] * 0.25, 2)
-                    print(f'${round(user["bank"] * 0.75, 2)} got stolen from your bank!')
+                    user.bank *= round(user.bank * 0.25, 2)
+                    print(f'${round(user.bank * 0.75, 2)} got stolen from your bank!')
                 elif random.randint(1, 25) == 25:
-                    user['wallet'] = 0
+                    user.wallet = 0
                     print('Your wallet got stolen!')
         
-        if user['health'] <= 0:
+        if not user.is_alive:
             print('You died!')
-            comd = 'exit'
+            break
         
         comd = find(input(f'Enter a command:  ').lower(), comds['main'])
         if not comd: continue
@@ -370,9 +389,10 @@ if __name__ == '__main__':
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
     user, username = login.main()
+    user = User(user)
     saves = login.saves
     print('You wake up, ready for a new day...')
     game_loop()
     mixer.music.stop()
-    saves[username] = user
+    saves[username] = user.__dict__
     with open('saves.json', 'w') as file: json.dump(saves, file)
