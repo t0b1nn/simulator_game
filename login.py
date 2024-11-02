@@ -1,5 +1,5 @@
 # login.py
-# v0.2.2
+# v0.2.3
 
 import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
@@ -9,7 +9,9 @@ def signup_user():
     confirmed = False
     while not confirmed:
         username = input('Create a username:  ')
-        if username.lower() == 'cancel': return
+        if username.lower() == 'cancel':
+            print('Sign-up cancelled.')
+            return
         if username not in saves.keys():
             if input(f'Enter "y" to confirm username {username}:  ').lower() == 'y': confirmed = True
         else:
@@ -35,7 +37,9 @@ def login_user():
         user_found = False
         while not user_found:
             username = input('Please enter your username:  ')
-            if username.lower() == 'cancel': return
+            if username.lower() == 'cancel':
+                print('Log-in cancelled.')
+                return
             user_found = True if username in saves else print('User not found.')
         user.update(saves[username])
         password_wrong, password_cancel = True,  False
@@ -43,6 +47,7 @@ def login_user():
             password = maskpass.askpass('Please enter your password:    ')
             if password.lower() == 'cancel':
                 password_cancel = True
+                print('Password entry cancelled.')
                 break
             if password == b64_utils.decode(user['password']):
                 password_wrong = False
@@ -74,9 +79,11 @@ def main():
         choice = input('If you would like to sign up, type "SIGN UP"\nIf you would like to log in, type "LOG IN".  ').lower()
         if choice == 'sign up':
             signup_user()
-        if choice == 'log in':
+        elif choice == 'log in':
             login_user()
         else:
             print('Invalid action.')
+        
+    return username, user
 
 if __name__ == '__main__': main()

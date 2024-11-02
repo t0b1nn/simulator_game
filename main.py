@@ -1,5 +1,5 @@
 # main.py
-# v0.2.2
+# v0.2.3
 
 comds_dict = {
     'main': {
@@ -358,7 +358,8 @@ if __name__ == '__main__':
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
     login.main()
-    user, username, saves = login.user, login.username, login.saves
+    user, username = login.main()
+    saves = login.saves
     print('You wake up, ready for a new day...')
     game_loop()
     mixer.music.stop()
