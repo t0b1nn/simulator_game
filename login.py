@@ -5,7 +5,7 @@ import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
 
 def signup_user():
-    global done
+    global username, saves, done
     confirmed = False
     while not confirmed:
         username = input('Create a username:  ')
@@ -32,7 +32,7 @@ def signup_user():
     print('Account created!\n')
 
 def login_user():
-    global done
+    global username, saves, done
     while not done:
         user_found = False
         while not user_found:
@@ -84,7 +84,6 @@ def main():
             login_user()
         else:
             print('Invalid action.')
-        
-    return username, user
+    return user, username
 
 if __name__ == '__main__': main()

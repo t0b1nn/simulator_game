@@ -2,8 +2,12 @@
 
 ## [v0.2.3] - 02-11-2024
 
+### Added
+- **Blackjack XP**: Earns XP for playing blackjack.
+
 ### Fixes
 - **Cancel option**: Fixed bug where "Invalid option" would randomly get printed.
+- **Other minor bug fixes**: Quick variable rearrangement, etc.
 
 ---
 ## [v0.2.2] - 01-11-2024

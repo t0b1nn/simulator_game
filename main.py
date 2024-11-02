@@ -292,12 +292,15 @@ def game_loop():
                         game = blackjack.play()
                         if game == 'blackjack':
                             user['wallet'] += bet * 1.5
+                            user['xp'] += 3
                             print(f'You earned ${bet * 1.5}!')
                         if game == 'win':
                             user['wallet'] += bet
+                            user['xp'] += 2
                             print(f'You earned ${bet}.')
                         if game == 'push':
                             print(f'You get your ${bet} back.')
+                            user['xp'] += 1
                         if game == 'loss':
                             user['wallet'] -= bet
                             print(f'You lost ${bet}.')
@@ -357,9 +360,8 @@ if __name__ == '__main__':
     if input('Music? [Y/N]  ').lower() == 'y':mixer.music.play(-1)
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
-    login.main()
-    saves = login.saves
     user, username = login.main()
+    saves = login.saves
     print('You wake up, ready for a new day...')
     game_loop()
     mixer.music.stop()
