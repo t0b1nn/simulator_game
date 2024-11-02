@@ -1,6 +1,6 @@
 # Changelog
 
-# [v0.2.3] - 02-11-2024
+## [v0.2.3] - 02-11-2024
 
 ### Fixes
 - **Cancel option**: Fixed bug where "Invalid option" would randomly get printed.
