@@ -1,5 +1,5 @@
 # main.py
-# v0.2.3
+# v0.2.4
 
 comds_dict = {
     'main': {
@@ -30,11 +30,16 @@ comds_dict = {
 comds = {}
 for key in comds_dict.keys(): comds[key] = list(comds_dict[key].keys())
 
-jobs = [
-    {'name':'Cashier', 'xp_rqd':0, 'shifts_rqd':2, 'xp_per_shift':2, 'salary':50},
-    {'name':'Waiter', 'xp_rqd':10, 'shifts_rqd':2, 'xp_per_shift':5, 'salary':75},
-    {'name':'Receptionist', 'xp_rqd':25, 'shifts_rqd':3, 'xp_per_shift':10, 'salary':150},
-]
+# jobs = [
+#     {'name':'Cashier', 'xp_rqd':0, 'shifts_rqd':2, 'xp_per_shift':2, 'salary':50},
+#     {'name':'Waiter', 'xp_rqd':10, 'shifts_rqd':2, 'xp_per_shift':5, 'salary':75},
+#     {'name':'Receptionist', 'xp_rqd':25, 'shifts_rqd':3, 'xp_per_shift':10, 'salary':150},
+# ]
+jobs = {
+    'Cashier': {'xp_rqd': 0, 'shifts_rqd': 2, 'xp_per_shift': 2, 'salary':50},
+    'Waiter': {'xp_rqd':10, 'shifts_rqd':2, 'xp_per_shift':5, 'salary':75},
+    'Receptionist': {'xp_rqd':25, 'shifts_rqd':3, 'xp_per_shift':10, 'salary':150},
+}
 timers = {
     'work':0.0,
     'sleep':0.0,
@@ -67,8 +72,11 @@ def find(item, options):
             pass
 
 def help(category):
-    for c in comds[category]: 
+    separator('HELP')
+    for c in comds[category]:
         print(f'\033[1m{c}\033[0m: {comds_dict[category][c]}')
+    separator()
+
 def obtain(item, quantity = 1):
     try:
         user['inventory'][item] += quantity
@@ -138,23 +146,24 @@ def game_loop():
             print(f'Wallet: ${user["wallet"]}')
             print(f'Bank: ${user["bank"]}/{user["bank_cap"]}\n')
             print(f'\033[1mOccupation\033[0m')
-            print(f'{"Job: " + user["job"]["name"] if user["job"] != {} else "Currently Unemployed"}')
-            print(f'{"Weekly Shifts: " + str(user["weekly"]["work"]) + "/" + str(user["job"]["shifts_rqd"]) if user["job"] != {} else ""}\n')
+            print(f'{"Job: " + user["job"] if user["job"] else "Currently Unemployed"}')
+            print(f'{"Weekly Shifts: " + str(user["weekly"]["work"]) + "/" + str(jobs[user["job"]]["shifts_rqd"]) if user["job"] != {} else ""}\n')
         
         if comd == 'work_apply':
             print('Job List:\n')
-            for j in jobs:
-                print(f'\033[1m{j["name"]}\033[0m')
-                print(f'Salary: {j["salary"]}')
-                print(f'Weekly Shifts Required: {j["shifts_rqd"]}')
-                print(f'XP Required: {j["xp_rqd"]}')
-                print(f'XP Per Shift: {j["xp_per_shift"]}\n')
+            for job in jobs:
+                print(f'\033[1m{job}\033[0m')
+                print(f'Salary: {jobs[job]["salary"]}')
+                print(f'Weekly Shifts Required: {jobs[job]["shifts_rqd"]}')
+                print(f'XP Required: {jobs[job]["xp_rqd"]}')
+                print(f'XP Per Shift: {jobs[job]["xp_per_shift"]}\n')
             applied = input('Choose a job:  ').lower()
             found = False
             for job in jobs:
-                if job['name'].lower() == applied:
+                if job.lower() == applied:
                     found = True
-                    applied = job
+                    applied = jobs[job]
+                    applied_name = job
                     break
             if not found:
                 print('Job not found.')
@@ -166,8 +175,8 @@ def game_loop():
                 applied = ''
                 print("You failed the interview and didn't get the job.")
             else:
-                user['job'] = applied['name']
-                print(f'You nailed the interview and got the job as a {applied["name"].lower()}!')
+                user['job'] = applied_name
+                print(f'You nailed the interview and got the job as a {applied_name.lower()}!')
         
         if comd == 'work':
             if not user['job']:
@@ -236,7 +245,7 @@ def game_loop():
                         if correct:
                             user['wallet'] += jobs[user['job']]['salary']
                             user['xp'] += jobs[user['job']]['xp_per_shift']
-                            print(f'Great work! You earned ${user["job"]["salary"]}.')
+                            print(f'Great work! You earned ${jobs[user["job"]]["salary"]}.')
                         else:
                             user['wallet'] += jobs[user['job']]['salary'] / 2
                             user['xp'] += int(jobs[user['job']]['xp_per_shift'] / 2)

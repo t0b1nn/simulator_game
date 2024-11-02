@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.2.4] - 02-11-2024
+
+### Fixes
+- **Improved readibility**: Enhanced variable names and data structures for better readability and maintainability.
+- **Job application logic**: Refined the job application and work logic, making it easier to manage in the long run.
+
+---
 ## [v0.2.3] - 02-11-2024
 
 ### Added
