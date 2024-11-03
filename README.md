@@ -1,7 +1,7 @@
 
 # The $imulator
 
-**Version**: v0.3.0
+**Version**: v0.3.1
 
 A text-based simulation game where you can dive into the thrill of life’s adventures—manage your finances, try your luck at the casino, hunt for resources, develop skills, and much more!
 

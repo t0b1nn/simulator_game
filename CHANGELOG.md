@@ -1,6 +1,11 @@
 # Changelog
 
-# [v0.3.0] - 02-11-2024
+## [v0.3.1] - 03-11-2024
+
+### Fixes
+- **Signing up**: If no other accounts are available or saved, you can no longer log in.
+---
+## [v0.3.0] - 02-11-2024
 
 ### Added
 - **New User class**: Introduced new User class replacing the old dictionary.

@@ -1,5 +1,5 @@
 # login.py
-# v0.3.0
+# v0.3.1
 
 import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
@@ -24,7 +24,8 @@ def signup_user():
     while not confirmed:
         username = input('Create a username:  ')
         if username.lower() == 'cancel':
-            print('Sign-up cancelled.')
+            if saves:
+                print('Sign-up cancelled.')
             return
         if username not in saves.keys():
             if input(f'Enter "y" to confirm username {username}:  ').lower() == 'y': confirmed = True
@@ -77,7 +78,10 @@ def main():
     print('Type "CANCEL" to cancel action.')
     done = False
     while not done:
-        choice = input('If you would like to sign up, type "SIGN UP"\nIf you would like to log in, type "LOG IN".  ').lower()
+        if saves:
+            choice = input('If you would like to sign up, type "SIGN UP"\nIf you would like to log in, type "LOG IN".  ').lower()
+        else:
+            choice = 'sign up'
         if choice == 'sign up':
             signup_user()
         elif choice == 'log in':
