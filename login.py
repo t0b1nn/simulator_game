@@ -6,20 +6,6 @@ with open('saves.json', 'r') as file: saves = json.load(file)
 
 def signup_user():
     global user, username, saves, done
-    user = {
-        'health': 20,
-        'hunger': 20,
-        'wallet': 0.0,
-        'bank': 0.0,
-        'bank_cap': 500000.0,
-        'job': {},
-        'xp': 0,
-        'inventory': {},
-        'day': -1,
-        'week': 1,
-        'daily': {'work':0,},
-        'weekly': {'work':0,},
-    }
     confirmed = False
     while not confirmed:
         username = input('Create a username:  ')
@@ -47,7 +33,7 @@ def signup_user():
     print('Account created!\n')
 
 def login_user():
-    global username, saves, done
+    global user, username, saves, done
     while not done:
         user_found = False
         while not user_found:
@@ -74,7 +60,21 @@ def login_user():
         user['day'] -= 1
 
 def main():
-    global username, user, done
+    global user, username, done
+    user = {
+        'health': 20,
+        'hunger': 20,
+        'wallet': 0.0,
+        'bank': 0.0,
+        'bank_cap': 500000.0,
+        'job': {},
+        'xp': 0,
+        'inventory': {},
+        'day': -1,
+        'week': 1,
+        'daily': {'work':0,},
+        'weekly': {'work':0,},
+    }
     print('Type "CANCEL" to cancel action.')
     done = False
     while not done:

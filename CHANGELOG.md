@@ -4,6 +4,8 @@
 
 ### Fixes
 - **Signing up**: If no other accounts are available or saved, you can no longer log in.
+- **Blackjack**: Removed redundant global variables.
+
 ---
 ## [v0.3.0] - 02-11-2024
 

@@ -31,7 +31,6 @@ def show_hand(hand, name, show_hole=True):
 
 
 def play(deck=create_deck()):
-    global player_hand, dealer_hand
     random.shuffle(deck)
     player_hand, dealer_hand = [deck.pop() for _ in range(2)], [deck.pop() for _ in range(2)]
     player_turn = True
