@@ -22,6 +22,7 @@ A text-based simulation game where you can dive into the thrill of life’s adve
 To install and run the game, you need to have **Pip**, **Python** and **Git** installed on your system.
 
 ### Install Requirements
+
 - **Python**: Download from the official [Python website](https://www.python.org/downloads/).
 - **Git**: Download from the official [Git website](https://git-scm.com/downloads).
 
