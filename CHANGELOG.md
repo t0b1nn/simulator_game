@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.4.0] - 11-11-2024  We will remember them
+
+### Added
+- **Alert system**: Added occasional alerts.
+- **Alert command**: New `alert` command for reading earliest alert.
+
+---
 ## [v0.3.1] - 03-11-2024
 
 ### Fixes

@@ -1,9 +1,10 @@
 # main.py
-# v0.3.0
+# v0.4.0
 
 comds_dict = {
     'main': {
         'help': 'See how to use commands.',
+        'alert': 'Read your earliest alert.',
         'deposit': 'Deposit money into your bank account.',
         'withdraw': 'Withdraw money from your bank account.',
         'profile': 'View your profile information.',
@@ -27,7 +28,7 @@ comds_dict = {
         'exit': 'Leave the casino.',
     },
 }
-comds = {}
+comds = {} # Making comds dictionary using existing comds_help
 for key in comds_dict.keys(): comds[key] = list(comds_dict[key].keys())
 
 # jobs = [
@@ -129,6 +130,12 @@ def game_loop():
     while comd != 'exit':
         if comd == 'help': help('main')
         
+        if comd == 'alert':
+            if user.alerts:
+                print(user.alerts.pop(0))
+            else:
+                print('You have no unread alerts!')
+
         if comd == 'deposit':
             while True:
                 try:
@@ -374,6 +381,8 @@ def game_loop():
             print('You died!')
             break
         
+        if user.alerts:
+            print(f'You have {len(user.alerts)} unread alert{"" if len(user.alerts) == 1 else "s"}!')
         comd = find(input(f'Enter a command:  ').lower(), comds['main'])
         if not comd: continue
 

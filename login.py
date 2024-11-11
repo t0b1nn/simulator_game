@@ -1,5 +1,5 @@
 # login.py
-# v0.3.1
+# v0.4.0
 
 import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
@@ -61,7 +61,7 @@ def login_user():
 
 def main():
     global user, username, done
-    user = {
+    user = { # Initial user dict for new users
         'health': 20,
         'hunger': 20,
         'wallet': 0.0,
@@ -70,6 +70,7 @@ def main():
         'job': {},
         'xp': 0,
         'inventory': {},
+        'alerts': ['Welcome to The $imulator! Have fun!'],
         'day': -1,
         'week': 1,
         'daily': {'work':0,},
