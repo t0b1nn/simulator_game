@@ -1,5 +1,5 @@
 # main.py
-# v0.4.0
+# v0.4.1
 
 comds_dict = {
     'main': {
@@ -392,9 +392,10 @@ if __name__ == '__main__':
     from minigames import blackjack
     from pygame import mixer
     os.system('cls' if os.name == 'nt' else 'clear')
-    mixer.init()
-    mixer.music.load('lofi_mix.mp3')
-    if input('Music? [Y/N]  ').lower() == 'y':mixer.music.play(-1)
+    if input('Music? [Y/N]  ').lower() == 'y':
+        mixer.init()
+        mixer.music.load('lofi_mix.mp3')
+        mixer.music.play(-1, random.uniform(0, 4075))
     print('Welcome to The $imulator!')
     print('Type "help" for more information.\n')
     user, username = login.main()
