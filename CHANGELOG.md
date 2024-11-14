@@ -1,6 +1,11 @@
 # Changelog
 
-## [v0.4.0] - 11-11-2024  We will remember them
+## [v0.4.1] - 14-11-2024
+
+### Fixes
+- **Hunger**: Fixed bug where user would lose hunger whenever logging in.
+
+## [v0.4.0] - 11-11-2024
 
 ### Added
 - **Alert system**: Added occasional alerts.

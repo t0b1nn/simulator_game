@@ -1,5 +1,5 @@
 # login.py
-# v0.4.0
+# v0.4.1
 
 import maskpass, b64_utils, json
 with open('saves.json', 'r') as file: saves = json.load(file)
@@ -58,12 +58,16 @@ def login_user():
         print('Successfully logged in!\n')
         done = True
         user['day'] -= 1
+        if user['hunger'] == 0:
+            user['health'] += 1
+        else:
+            user['hunger'] += 1
 
 def main():
     global user, username, done
     user = { # Initial user dict for new users
         'health': 20,
-        'hunger': 20,
+        'hunger': 21,
         'wallet': 0.0,
         'bank': 0.0,
         'bank_cap': 500000.0,
