@@ -1,5 +1,5 @@
 # blackjack.py
-# v0.1.0
+# v0.3.1
 
 import random, time
 
