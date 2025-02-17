@@ -1,5 +1,11 @@
+
 # Changelog
 
+## [v0.4.2] - 17-02-2025
+
+### Fixes
+- **Bug fixes**: Minor syntax improvements
+---
 ## [v0.4.1] - 14-11-2024
 
 ### Fixes

@@ -1,5 +1,5 @@
 # main.py
-# v0.4.1
+# v0.4.2
 
 comds_dict = {
     'main': {
@@ -388,7 +388,11 @@ def game_loop():
 
 
 if __name__ == '__main__':
-    import random, time, os, json, sys, login
+    import time
+    import os
+    import json
+    import sys
+    import login
     from minigames import blackjack
     from pygame import mixer
     os.system('cls' if os.name == 'nt' else 'clear')
