@@ -388,6 +388,7 @@ def game_loop():
 
 
 if __name__ == '__main__':
+    import random
     import time
     import os
     import json
