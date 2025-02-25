@@ -5,6 +5,7 @@
 
 ### Fixes
 - **Bug fixes**: Minor syntax improvements
+
 ---
 ## [v0.4.1] - 14-11-2024
 
@@ -12,6 +13,7 @@
 - **Hunger**: Fixed bug where user would lose hunger whenever logging in.
 - **Music**: Music now starts at a random place in the track.
 
+---
 ## [v0.4.0] - 11-11-2024
 
 ### Added
